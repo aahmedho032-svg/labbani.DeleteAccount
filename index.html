@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="icon.png">
+  <title>طلب حذف الحساب</title>
+
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #ffffff; /* خلفية الصفحة أبيض */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: #000; /* النص أسود */
+    }
+
+    .form-box {
+      background: #d2b48c; /* بني فاتح */
+      padding: 30px;
+      width: 420px;
+      border-radius: 8px;
+      border: 2px solid #8b0000; /* أحمر غامق */
+      display: flex;
+      flex-direction: column;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #8b0000; /* نفس اللون الأحمر الغامق */
+      background: #ffffff; /* أبيض */
+      color: #000; /* نص أسود */
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      border: none;
+      background: #8b0000; /* زر أحمر غامق */
+      color: white;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+
+    h3 {
+      text-align: center;
+      color: #000; /* عنوان أسود */
+      margin-bottom: 10px;
+    }
+
+    img {
+      width: 80px;
+      height: 80px;
+      display: block;
+      margin: 0 auto 15px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <form class="form-box" id="deleteForm">
+    <img src="icon.png" alt="app icon" />
+    <h3>طلب حذف الحساب</h3>
+
+    <label>البريد الإلكتروني</label>
+    <input type="email" id="email" required />
+
+    <label>تفاصيل الطلب</label>
+    <textarea id="details" rows="4" required></textarea>
+
+    <button type="submit">ارسال الطلب</button>
+  </form>
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <script>
+    emailjs.init("8pJnvNEONfK0cgCd2");
+
+    const form = document.getElementById("deleteForm");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const details = document.getElementById("details").value.trim();
+
+      if (!email || !details) {
+        alert("⚠️ من فضلك املأ جميع الخانات.");
+        return;
+      }
+
+      const templateParams = {
+        user_email: email,
+        request_type: "طلب حذف الحساب من علي تطبيق labbani restaurnt",
+        details: details,
+        time: new Date().toLocaleString()
+      };
+
+      try {
+        await emailjs.send("service_gy8ixur", "template_mycw6cg", templateParams);
+        alert("✅ تم ارسال الطلب بنجاح");
+        form.reset();
+      } catch (error) {
+        console.error(error);
+        alert("❌ حدثت مشكلة في الإرسال. حاول مرة أخرى.");
+      }
+    });
+  </script>
+
+</body>
+</html>
